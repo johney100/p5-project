@@ -1,0 +1,44 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Global styles */
+body {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* Navbar styles */
+.navbar {
+  @apply bg-blue-500 text-white px-4 py-3;
+}
+
+.navbar-nav {
+  @apply flex items-center gap-4;
+}
+
+.navbar-nav a {
+  @apply text-white hover:underline;
+}
+
+/* Container styles */
+.container {
+  @apply max-w-screen-xl mx-auto px-4 py-6;
+}
+
+/* ShowContainer styles */
+.show-card {
+  @apply border border-gray-200 rounded-lg p-4 m-4;
+}
+
+/* ActorContainer styles */
+.actor-card {
+  @apply border border-gray-200 rounded-lg p-4 m-4;
+}
+
+/* UserContainer styles */
+.user-card {
+  @apply border border-gray-200 rounded-lg p-4 m-4;
+}
+
