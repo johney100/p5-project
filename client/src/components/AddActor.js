@@ -25,7 +25,7 @@ function AddActor({ onAddActor, showId }) {
 
   const handleSubmit = async (values, { resetForm }) => {
     // Send a POST request to create a new actor
-    const actorResponse = await fetch("http://127.0.0.1:5000/actors", {
+    const actorResponse = await fetch("http://127.0.0.1:5000/authors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,7 @@ function AddActor({ onAddActor, showId }) {
     const newActorData = await actorResponse.json();
 
     // Send a POST request to create a new show-actor association
-    const associationResponse = await fetch("http://127.0.0.1:5000/shows_actors", {
+    const associationResponse = await fetch("http://127.0.0.1:5000/stories_authors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -11,44 +11,44 @@ metadata = MetaData(naming_convention={
 
 db = SQLAlchemy(metadata=metadata)
 
-shows_actors = db.Table(
-    'shows_actors',
+stories_authors = db.Table(
+    'stories_authors',
     metadata,
-    db.Column('show_id', db.Integer, db.ForeignKey('shows.id'), primary_key=True),
-    db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
+    db.Column('story_id', db.Integer, db.ForeignKey('stories.id'), primary_key=True),
+    db.Column('author', db.Integer, db.ForeignKey('authors.id'), primary_key=True),
     db.Column('role', db.String, unique=False)  # Add a new column for the role attribute
 )
 
 
-class Show(db.Model, SerializerMixin):
-    __tablename__ = 'shows'
+class Story(db.Model, SerializerMixin):
+    __tablename__ = 'stories'  # Use plural form for consistency
 
-    serialize_rules = ('-reviews','-actors')
-    
-    name = db.Column(db.String, unique=False)
-    network = db.Column(db.String, unique=False)
+    serialize_rules = ('-reviews', '-authors')  # Only exclude if using serialization
+
+    title = db.Column(db.String, unique=False)
+    body = db.Column(db.String, unique=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     id = db.Column(db.Integer, primary_key=True)
 
-    # Relationship mapping the show to related reviews
+    # Relationship mapping the story to related reviews
     reviews = db.relationship(
-        'Review', back_populates="show", cascade='all, delete-orphan')
+        'Review', back_populates="story", cascade='all, delete-orphan')
 
+    # Relationship mapping the story to related actors
+    authors = db.relationship(
+        'Author', secondary=stories_authors, back_populates='stories')
 
-    # Relationship mapping the show to related actors
-    actors = db.relationship(
-        'Actor', secondary=shows_actors, back_populates='shows')
-   
     def __repr__(self):
-        return f'<Show {self.name} Network: {self.network}>'
-    
+        # Assuming you want to represent by title, change if needed
+        return f'<Story {self.title}>'
 
-class Actor(db.Model, SerializerMixin):
-    __tablename__ = 'actors'
 
-    serialize_rules = ('-shows',)
+class Author(db.Model, SerializerMixin):
+    __tablename__ = 'authors'
+
+    serialize_rules = ('-stories',)  # Only exclude if using serialization
 
     name = db.Column(db.String)
     age = db.Column(db.Integer)
@@ -56,36 +56,31 @@ class Actor(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     id = db.Column(db.Integer, primary_key=True)
-
-    # Relationship mapping the meeting to related employees
-    shows = db.relationship(
-        'Show', secondary=shows_actors, back_populates='actors')
-    
-    show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
    
+
+    # Relationship mapping the actor to related stories
+    stories = db.relationship(
+        'Story', secondary=stories_authors, back_populates='authors')
+
     def __repr__(self):
-        return f'<Actor {self.name}>'
-    
+        return f'<Author {self.name}>'
+
 
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
 
-    #serialize_rules = ( '-shows',)
-    
+    # serialize_rules = ('-shows',)  # Remove if not using serialization
+
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer)
     comment = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    story_id = db.Column(db.Integer, db.ForeignKey('stories.id'))
 
-    
-    show_id = db.Column(db.Integer, db.ForeignKey('shows.id'))
-    
-    # Relationship mapping the review to related show
-    show = db.relationship('Show', back_populates="reviews")
-
-   # user = db.relationship('User', back_populates="reviews")
+    # Relationship mapping the review to related story
+    story = db.relationship('Story', back_populates="reviews")
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 

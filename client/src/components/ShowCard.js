@@ -1,12 +1,12 @@
 import React from 'react';
 
-function ShowCard({ show, onDeleteShow, onEditShow }) {
+function ShowCard({ story, onDeleteStory, onEditStory }) {
   return (
     <div className="show-card">
-      <h3>Show Name: {show.name}</h3>
-      <p>Network: {show.network}</p>
-      <button onClick={() => onDeleteShow(show.id)}>Delete</button>
-      {onEditShow && <button onClick={() => onEditShow(show.id)}>Edit</button>}
+      <h3>Story Title: {story.title}</h3>
+      <p>{story.body}</p>
+      <button onClick={() => onDeleteStory(story.id)}>Delete</button>
+      {onEditStory && <button onClick={() => onEditStory(story.id)}>Edit</button>}
 
     </div>
   );

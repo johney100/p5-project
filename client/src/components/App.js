@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     const fetchActorData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/actors');
+        const response = await fetch('http://127.0.0.1:5000/authors');
         const data = await response.json();
         setActors(data);
       } catch (error) {

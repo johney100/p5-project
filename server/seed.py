@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Show, Actor, User, Review, shows_actors
+from models import db, Story, Author, User, Review, stories_authors
 
 fake = Faker()
 
@@ -26,7 +26,7 @@ def make_reviews():
         Review(
             comment=fake.sentence(),
             score=randint(1, 4),
-            show_id=randint(1, 10),
+            story_id=randint(1, 10),
             user_id=randint(1, 10),
         )
         for _ in range(20)
@@ -35,21 +35,21 @@ def make_reviews():
     db.session.add_all(reviews)
     db.session.commit()    
 
-def make_actors():
+def make_authors():
 
-    Actor.query.delete()
+    Author.query.delete()
     
-    actors = [
-        Actor(
+    authors = [
+        Author(
             name=f"{fake.first_name()} {fake.last_name()}",
-            age=randint(18, 85),
-            show_id=randint(1, 10),
+            age=randint(18, 85)
+            
         )
         for _ in range(25)
     ]
 
 
-    db.session.add_all(actors)
+    db.session.add_all(authors)
     db.session.commit()    
 
 def make_users():
@@ -67,35 +67,35 @@ def make_users():
     db.session.add_all(users)
     db.session.commit()  
 
-def make_shows():
+def make_stories():
 
-    Show.query.delete()
+    Story.query.delete()
     
-    shows = [
-        Show(
-            name=fake.catch_phrase(),
-            network=f"{fake.word().upper()} TV"
+    stories = [
+        Story(
+            title=fake.catch_phrase(),
+            body=fake.paragraph()
         )
         for _ in range(10)
     ]
 
-    db.session.add_all(shows)
+    db.session.add_all(stories)
     db.session.commit()  
 
-def actor_to_show():
+def author_to_story():
     
-    db.session.query(shows_actors).delete()
+    db.session.query(stories_authors).delete()
 
-    shows = Show.query.all()  # Get all existing shows
+    stories = Story.query.all()  # Get all existing shows
 
     for _ in range(10):
-        random_actor = rc(Actor.query.all())
+        random_author = rc(Author.query.all())
 
         # Choose a random show from existing ones
-        random_show = rc(shows)
-        random_show.actors.append(random_actor)
+        random_story = rc(stories)
+        random_story.authors.append(random_author)
 
-        db.session.add(random_show)  # Add the modified show
+        db.session.add(random_story)  # Add the modified show
 
     db.session.commit()
 
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
         make_reviews()
-        make_actors()
+        make_authors()
         make_users()
-        make_shows()
-        actor_to_show()
+        make_stories()
+        author_to_story()

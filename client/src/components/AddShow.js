@@ -19,7 +19,7 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values)
     console.log(showToUpdate)
-    const url = showToUpdate ? `http://127.0.0.1:5000/shows/${showToUpdate.id}` : "http://127.0.0.1:5000/shows";
+    const url = showToUpdate ? `http://127.0.0.1:5000/stories/${showToUpdate.id}` : "http://127.0.0.1:5000/stories";
     const method = showToUpdate ? "PUT" : "POST";
     const body = JSON.stringify(values);
 

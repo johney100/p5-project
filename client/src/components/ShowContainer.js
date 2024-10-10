@@ -7,21 +7,21 @@ import AddActor from "./AddActor";
 
 function ShowContainer() {
   const [reviews, setReviews] = useState([]);
-  const [shows, setShows] = useState([]);
-  const [selectedShow, setSelectedShow] = useState(null); // Track selected show for update
-  console.log(selectedShow)
+  const [stories, setStories] = useState([]);
+  const [selectedStory, setSelectedStory] = useState(null); // Track selected show for update
+  console.log(selectedStory)
   useEffect(() => {
-    const fetchShowData = async () => {
+    const fetchStoryData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/shows');
+        const response = await fetch('http://127.0.0.1:5000/stories');
         const data = await response.json();
-        setShows(data);
+        setStories(data);
       } catch (error) {
         console.error('Error fetching shows:', error);
       }
     };
 
-    fetchShowData();
+    fetchStoryData();
   }, []);
 
   useEffect(() => {
@@ -38,52 +38,52 @@ function ShowContainer() {
     fetchReviewsData();
   }, []);
 
-  const handleAddShow = (newShow) => {
-    console.log("New show added:", newShow);
+  const handleAddStory = (newStory) => {
+    console.log("New story added:", newStory);
     
   };
 
-  const handleAddReview = (showId, newReview) => {
-    console.log("New review added for show", showId, newReview);
+  const handleAddReview = (storyId, newReview) => {
+    console.log("New review added for story", storyId, newReview);
   };
 
-  const handleDeleteShow = (showId) => {
-    fetch(`http://127.0.0.1:5000/shows/${showId}`, {
+  const handleDeleteStory = (storyId) => {
+    fetch(`http://127.0.0.1:5000/stories/${storyId}`, {
       method: "DELETE",
     })
       .then(() => {
-        setShows(shows.filter((show) => show.id !== showId));
+        setStories(stories.filter((story) => story.id !== storyId));
       })
       .catch((error) => {
-        console.error("Error deleting show:", error);
+        console.error("Error deleting story:", error);
       });
   };
 
-  const handleEditShow = (showId) => {
-    console.log(showId)
-    setSelectedShow(shows.find((show) => show.id === showId));
+  const handleEditStory = (storyId) => {
+    console.log(storyId)
+    setSelectedStory(stories.find((story) => story.id === storyId));
  
   };
 
-  const handleUpdateShow = (updatedShow) => {
-    setShows((prevShows) =>
-      prevShows.map((show) => (show.id === updatedShow.id ? updatedShow : show))
+  const handleUpdateStory = (updatedStory) => {
+    setStories((prevStories) =>
+      prevStories.map((story) => (story.id === updatedStory.id ? updatedStory : story))
     );
   };
 
   return (
     <div className="container">
-      <h2>This is the Show Card</h2>
-      <h1>Add a new show</h1>
-      <AddShow onAddShow={handleAddShow} showToUpdate={selectedShow} onUpdateShow={handleUpdateShow} />
-      <h2>List of TV Shows</h2>
+      <h2>This is the Story Card</h2>
+      <h1>Add a new story</h1>
+      <AddShow onAddStory={handleAddStory} storyToUpdate={selectedStory} onUpdateStory={handleUpdateStory} />
+      <h2>List of Stories</h2>
       <ul>
-        {shows.map((show) => (
-          <li key={show.id}>
-            <ShowCard show={show} onDeleteShow={handleDeleteShow} onEditShow={handleEditShow} />
-            <ReviewCard review={reviews.find((review) => review.show_id === show.id)} showId = {show.id} onAddReview={handleAddReview} />
-            <AddReview onAddReview={handleAddReview} showId = {show.id}/>
-            <AddActor showId={show.id} />
+        {stories.map((story) => (
+          <li key={story.id}>
+            <ShowCard story={story} onDeleteStory={handleDeleteStory} onEditStory={handleEditStory} />
+            <ReviewCard review={reviews.find((review) => review.story_id === story.id)} storyId = {story.id} onAddReview={handleAddReview} />
+            <AddReview onAddReview={handleAddReview} storyId = {story.id}/>
+            <AddActor storyId={story.id} />
           </li>
         ))}
       </ul>
