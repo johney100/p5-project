@@ -1,11 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
+function AddStory({ onAddStory, storyToUpdate, onUpdateStory }) {
   const initialValues = {
-    id: showToUpdate?.id || null,
-    name: showToUpdate?.name || "",
-    network: showToUpdate?.network || "",
+    id: storyToUpdate?.id || null,
+    title: storyToUpdate?.title || "",
+    body: storyToUpdate?.body || "",
   };
 
   const validate = (values) => {
@@ -18,21 +18,21 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
 
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values)
-    console.log(showToUpdate)
-    const url = showToUpdate ? `http://127.0.0.1:5000/stories/${showToUpdate.id}` : "http://127.0.0.1:5000/stories";
-    const method = showToUpdate ? "PUT" : "POST";
+    console.log(storyToUpdate)
+    const url = storyToUpdate ? `http://127.0.0.1:5000/stories/${storyToUpdate.id}` : "http://127.0.0.1:5000/stories";
+    const method = storyToUpdate ? "PUT" : "POST";
     const body = JSON.stringify(values);
 
     try {
       const response = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body });
       if (!response.ok) {
-        throw new Error(`Error ${method === "PUT" ? "updating" : "creating"} show: ${response.statusText}`);
+        throw new Error(`Error ${method === "PUT" ? "updating" : "creating"} story: ${response.statusText}`);
       }
-      const newShowData = await response.json();
-      if (showToUpdate) {
-        onUpdateShow(newShowData);
+      const newStoryData = await response.json();
+      if (storyToUpdate) {
+        onUpdateStory(newStoryData);
       } else {
-        onAddShow(newShowData);
+        onAddStory(newStoryData);
       }
       // Reset form after successful submit
     } catch (error) {
@@ -45,33 +45,33 @@ function AddShow({ onAddShow, showToUpdate, onUpdateShow }) {
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
       {({ values, handleChange, touched, errors }) => (
-        <Form className="new-show">
+        <Form className="new-story">
           <Field
             type="text"
-            name="name"
+            name="title"
             autoComplete="off"
-            placeholder="Enter show name"
-            value={values.name}
+            placeholder="Add story title"
+            value={values.title}
             onChange={handleChange}
           />
-          <ErrorMessage name="name" component="div" className="error" />
+          <ErrorMessage name="title" component="div" className="error" />
 
           
           <Field
             type="text"
-            name="network"
+            name="body"
             autoComplete="off"
-            placeholder="Enter network"
-            value={values.network}
+            placeholder="Write a story"
+            value={values.body}
             onChange={handleChange}
           />
-          <ErrorMessage name="network" component="div" className="error" />
+          <ErrorMessage name="body" component="div" className="error" />
 
-          <button type="submit">{showToUpdate ? "Update" : "Send"}</button>
+          <button type="submit">{storyToUpdate ? "Update" : "Send"}</button>
         </Form>
       )}
     </Formik>
   );
 }
 
-export default AddShow;
+export default AddStory;

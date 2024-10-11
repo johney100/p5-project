@@ -11,7 +11,7 @@ import os
 os.environ["GOOGLE_GENERATIVEAI_API_KEY"] = "AIzaSyCBr3rKUNANxHMOo2yIpHrl0XqWJ_VyPss"
 genai.configure(api_key=os.environ["GOOGLE_GENERATIVEAI_API_KEY"])
 
-from models import db, Story, Author, User, Review, stories_authors
+from models import db, Story, Author, User, Comment, stories_authors
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -33,13 +33,13 @@ class StoryList(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('name')
-        parser.add_argument('network')
+        parser.add_argument('title')
+        parser.add_argument('body')
         data = parser.parse_args()
 
         new_story = Story(
-            name=data['name'],
-            network=data.get('network')
+            title=data['title'],
+            body=data.get('body')
         )
 
         db.session.add(new_story)
@@ -57,13 +57,13 @@ class StoryId(Resource):
 
     def put(self, id):
         parser = reqparse.RequestParser()
-        parser.add_argument('name')
+        parser.add_argument('title')
         data = parser.parse_args()
 
         story = Story.query.filter_by(id=id).first()
         if story:
-            if data.get('name'):
-                story.name = data['name']
+            if data.get('title'):
+                story.title = data['title']
                 db.session.commit()
             return story.to_dict(), 200
         else:
@@ -78,28 +78,28 @@ class StoryId(Resource):
         else:
             return {'message': 'Story not found'}, 404
 
-class ReviewList(Resource):
+class CommentList(Resource):
     def get(self):
-        reviews = [review.to_dict() for review in Review.query.all()]
-        return reviews, 200
+        comments = [comment.to_dict() for comment in Comment.query.all()]
+        return comments, 200
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('score', required=True)
+        parser.add_argument('rating', required=True)
         parser.add_argument('comment', required=True)
         parser.add_argument('story_id', required=True)
         data = parser.parse_args()
 
-        new_review = Review(
-            score=data['score'],
+        new_comment = Comment(
+            rating=data['rating'],
             comment=data['comment'],
             story_id=data['story_id']
         )
 
-        db.session.add(new_review)
+        db.session.add(new_comment)
         db.session.commit()
 
-        return new_review.to_dict(), 201
+        return new_comment.to_dict(), 201
 
 class UserList(Resource):
     def get(self):
@@ -131,14 +131,14 @@ class AuthorList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', required=True)
         parser.add_argument('age')
-        parser.add_argument('show_id', required=True)
+       # parser.add_argument('story_id', required=True)
         parser.add_argument('role')
         data = parser.parse_args()
 
         new_author = Author(
             name=data['name'],
             age=data.get('age'),
-            show_id=data['show_id']
+           # story_id=data['story_id']
         )
 
         db.session.add(new_author)
@@ -185,7 +185,7 @@ api.add_resource(StoryAuthorRelationship, '/stories_authors/<int:story_id>/<int:
 
 # ... Register routes (assuming `api` is an instance of Api):
 
-api.add_resource(ReviewList, '/reviews')
+api.add_resource(CommentList, '/comments')
 api.add_resource(UserList, '/users')
 
 # ... Register routes (assuming `api` is an instance of Api):

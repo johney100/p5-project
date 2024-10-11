@@ -23,7 +23,7 @@ stories_authors = db.Table(
 class Story(db.Model, SerializerMixin):
     __tablename__ = 'stories'  # Use plural form for consistency
 
-    serialize_rules = ('-reviews', '-authors')  # Only exclude if using serialization
+    serialize_rules = ('-comments', '-authors')  # Only exclude if using serialization
 
     title = db.Column(db.String, unique=False)
     body = db.Column(db.String, unique=False)
@@ -33,8 +33,8 @@ class Story(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
 
     # Relationship mapping the story to related reviews
-    reviews = db.relationship(
-        'Review', back_populates="story", cascade='all, delete-orphan')
+    comments = db.relationship(
+        'Comment', back_populates="story", cascade='all, delete-orphan')
 
     # Relationship mapping the story to related actors
     authors = db.relationship(
@@ -57,7 +57,7 @@ class Author(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
    
-
+    
     # Relationship mapping the actor to related stories
     stories = db.relationship(
         'Story', secondary=stories_authors, back_populates='authors')
@@ -66,13 +66,13 @@ class Author(db.Model, SerializerMixin):
         return f'<Author {self.name}>'
 
 
-class Review(db.Model, SerializerMixin):
-    __tablename__ = 'reviews'
+class Comment(db.Model, SerializerMixin):
+    __tablename__ = 'comments'
 
     # serialize_rules = ('-shows',)  # Remove if not using serialization
 
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer)
+    rating = db.Column(db.Integer)
     comment = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
@@ -80,12 +80,12 @@ class Review(db.Model, SerializerMixin):
     story_id = db.Column(db.Integer, db.ForeignKey('stories.id'))
 
     # Relationship mapping the review to related story
-    story = db.relationship('Story', back_populates="reviews")
+    story = db.relationship('Story', back_populates="comments")
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return f'<Review ({self.id}) of {self.comment}: {self.score}/10>'
+        return f'<Comment ({self.id}) of {self.comment}: {self.rating}/10>'
     
     
 class User(db.Model, SerializerMixin):

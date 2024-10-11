@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import ShowCard from "./ShowCard";
-import ReviewCard from "./ReviewCard";
-import AddShow from "./AddShow";
-import AddReview from "./AddReview";
-import AddActor from "./AddActor";
+import StoryCard from "./StoryCard";
+import CommentCard from "./CommentCard";
+import AddStory from "./AddStory";
+import AddComment from "./AddComment";
+import AddAuthor from "./AddAuthor";
 
-function ShowContainer() {
-  const [reviews, setReviews] = useState([]);
+function StoryContainer() {
+  const [comments, setComments] = useState([]);
   const [stories, setStories] = useState([]);
-  const [selectedStory, setSelectedStory] = useState(null); // Track selected show for update
+  const [selectedStory, setSelectedStory] = useState(null); // Track selected story for update
   console.log(selectedStory)
   useEffect(() => {
     const fetchStoryData = async () => {
@@ -17,7 +17,7 @@ function ShowContainer() {
         const data = await response.json();
         setStories(data);
       } catch (error) {
-        console.error('Error fetching shows:', error);
+        console.error('Error fetching stories:', error);
       }
     };
 
@@ -25,17 +25,17 @@ function ShowContainer() {
   }, []);
 
   useEffect(() => {
-    const fetchReviewsData = async () => {
+    const fetchCommentsData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/reviews");
+        const response = await fetch("http://127.0.0.1:5000/comments");
         const data = await response.json();
-        setReviews(data);
+        setComments(data);
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error("Error fetching comments:", error);
       }
     };
 
-    fetchReviewsData();
+    fetchCommentsData();
   }, []);
 
   const handleAddStory = (newStory) => {
@@ -43,8 +43,8 @@ function ShowContainer() {
     
   };
 
-  const handleAddReview = (storyId, newReview) => {
-    console.log("New review added for story", storyId, newReview);
+  const handleAddComment = (storyId, newComment) => {
+    console.log("New comment added for story", storyId, newComment);
   };
 
   const handleDeleteStory = (storyId) => {
@@ -75,15 +75,15 @@ function ShowContainer() {
     <div className="container">
       <h2>This is the Story Card</h2>
       <h1>Add a new story</h1>
-      <AddShow onAddStory={handleAddStory} storyToUpdate={selectedStory} onUpdateStory={handleUpdateStory} />
+      <AddStory onAddStory={handleAddStory} storyToUpdate={selectedStory} onUpdateStory={handleUpdateStory} />
       <h2>List of Stories</h2>
       <ul>
         {stories.map((story) => (
           <li key={story.id}>
-            <ShowCard story={story} onDeleteStory={handleDeleteStory} onEditStory={handleEditStory} />
-            <ReviewCard review={reviews.find((review) => review.story_id === story.id)} storyId = {story.id} onAddReview={handleAddReview} />
-            <AddReview onAddReview={handleAddReview} storyId = {story.id}/>
-            <AddActor storyId={story.id} />
+            <StoryCard story={story} onDeleteStory={handleDeleteStory} onEditStory={handleEditStory} />
+            <CommentCard comment={comments.find((comment) => comment.story_id === story.id)} storyId = {story.id} onAddComment={handleAddComment} />
+            <AddComment onAddComment={handleAddComment} storyId = {story.id}/>
+            <AddAuthor storyId={story.id} />
           </li>
         ))}
       </ul>
@@ -91,4 +91,4 @@ function ShowContainer() {
   );
 }
 
-export default ShowContainer;
+export default StoryContainer;

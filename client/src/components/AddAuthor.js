@@ -1,11 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-function AddActor({ onAddActor, showId }) {
+function AddAuthor({ onAddAuthor, storyId }) {
   const initialValues = {
     name: "",
     age: "",
-    show_id: showId,
+    story_id: storyId,
     role: "",
   };
 
@@ -24,8 +24,8 @@ function AddActor({ onAddActor, showId }) {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    // Send a POST request to create a new actor
-    const actorResponse = await fetch("http://127.0.0.1:5000/authors", {
+    // Send a POST request to create a new author
+    const authorResponse = await fetch("http://127.0.0.1:5000/authors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,48 +33,48 @@ function AddActor({ onAddActor, showId }) {
       body: JSON.stringify(values),
     });
 
-    if (!actorResponse.ok) {
-      console.error("Error creating actor:", actorResponse.statusText);
+    if (!authorResponse.ok) {
+      console.error("Error creating author:", authorResponse.statusText);
       return;
     }
     resetForm();
 
-    const newActorData = await actorResponse.json();
+    const newAuthorData = await authorResponse.json();
 
-    // Send a POST request to create a new show-actor association
+    // Send a POST request to create a new story-author association
     const associationResponse = await fetch("http://127.0.0.1:5000/stories_authors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        show_id: showId,
-        actor_id: newActorData.id,
-        role: newActorData.role,
+        story_id: storyId,
+        author_id: newAuthorData.id,
+        role: newAuthorData.role,
       }),
     });
 
     if (!associationResponse.ok) {
       console.error(
-        "Error creating show-actor association:",
+        "Error creating story-author association:",
         associationResponse.statusText
       );
       return;
     }
 
-    onAddActor(newActorData);
+    onAddAuthor(newAuthorData);
   };
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
       {({ values, handleChange, touched, errors }) => ( 
-        <Form className="new-review">
-          <h4>Add an actor to this show</h4>
+        <Form className="new-author">
+          <h4>Add an author to this story</h4>
           <Field
             type="text"
             name="name"
             autoComplete="off"
-            placeholder="Enter Actor's Name"
+            placeholder="Enter Author's Name"
             value={values.name}
             onChange={handleChange}
           />
@@ -84,7 +84,7 @@ function AddActor({ onAddActor, showId }) {
             type="text"
             name="age"
             autoComplete="off"
-            placeholder="Enter Actor's Age"
+            placeholder="Enter author's Age"
             value={values.age}
             onChange={handleChange}
           />
@@ -94,7 +94,7 @@ function AddActor({ onAddActor, showId }) {
             type="text"
             name="role"
             autoComplete="off"
-            placeholder="Enter Actor's Role"
+            placeholder="Enter Author's Role"
             value={values.role}
             onChange={handleChange}
           />
@@ -109,4 +109,4 @@ function AddActor({ onAddActor, showId }) {
   );
 }
 
-export default AddActor;
+export default AddAuthor;

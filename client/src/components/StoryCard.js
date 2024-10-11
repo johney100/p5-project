@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ShowCard({ story, onDeleteStory, onEditStory }) {
+function StoryCard({ story, onDeleteStory, onEditStory }) {
   return (
     <div className="show-card">
       <h3>Story Title: {story.title}</h3>
@@ -12,4 +12,4 @@ function ShowCard({ story, onDeleteStory, onEditStory }) {
   );
 }
 
-export default ShowCard;
+export default StoryCard;
