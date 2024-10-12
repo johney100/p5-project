@@ -56,7 +56,7 @@ class Author(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     id = db.Column(db.Integer, primary_key=True)
-   
+    
     
     # Relationship mapping the actor to related stories
     stories = db.relationship(
@@ -83,6 +83,7 @@ class Comment(db.Model, SerializerMixin):
     story = db.relationship('Story', back_populates="comments")
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates="comments")
 
     def __repr__(self):
         return f'<Comment ({self.id}) of {self.comment}: {self.rating}/10>'
@@ -99,8 +100,9 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    #reviews = db.relationship('Review', backref='user')
-    #review = db.relationship('Review', back_populates="users")
+
+    comments = db.relationship('Comment', back_populates="user")
+ 
 
 
 ### USE breakpoint - similar to ipdb - external lib

@@ -1,25 +1,30 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-function AddComment({ onAddComment, showId }) {
+function AddComment({ onAddComment, storyId }) {
   const initialValues = {
     comment: "",
     rating: "",
-    show_id: showId,
+    user_id: "",
+    story_id: storyId,
   };
+
+  
 
   const validate = (values) => {
     const errors = {};
     if (!values.comment) {
       errors.comment = "Comment is required";
     }
-    if (!values.rating || isNaN(values.ratubf)) {
+    if (!values.rating || isNaN(values.rating))  {
       errors.rating = "Rating must be a number";
-    } else if (values.score < 0 || values.score > 5) {
-      errors.score = "Rating must be between 0 and 5";
+    } else if (values.rating < 0 || values.rating > 5) {
+      errors.rating = "Rating must be between 0 and 5";
     }
     return errors;
   };
+
+  const handleFetchUsers = (userList) => { fetch(`http://127.0.0.1:5000/users`, { method: "GET", })}
 
   const handleSubmit = async (values, { resetForm }) => {
     // Send a POST request to create a new comment
@@ -65,6 +70,16 @@ function AddComment({ onAddComment, showId }) {
             onChange={handleChange}
           />
           <ErrorMessage name="rating" component="div" className="error" />
+          
+          <Field
+            type="text"
+            name="username"
+            autoComplete="off"
+            placeholder="Enter your username"
+            value={values.username}
+            onChange={handleChange}
+          />
+          <ErrorMessage name="username" component="div" className="error" />
 
           <button type="submit" disabled={!!errors.length}>
             Send

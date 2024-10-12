@@ -124,6 +124,14 @@ class UserList(Resource):
 
         return new_user.to_dict(), 201
 
+class UserId(Resource):
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if user:
+            return user.to_dict(), 200
+        else:
+            return {'message': 'User not found'}, 404
+
 class AuthorList(Resource):
     def get(self):
         authors = [author.to_dict() for author in Author.query.all()]
@@ -189,6 +197,7 @@ api.add_resource(StoryAuthorRelationship, '/stories_authors/<int:story_id>/<int:
 
 api.add_resource(CommentList, '/comments')
 api.add_resource(UserList, '/users')
+api.add_resource(UserId, '/users/<int:id>')
 
 # ... Register routes (assuming `api` is an instance of Api):
 
