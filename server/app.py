@@ -58,12 +58,14 @@ class StoryId(Resource):
     def put(self, id):
         parser = reqparse.RequestParser()
         parser.add_argument('title')
+        parser.add_argument('body')
         data = parser.parse_args()
 
         story = Story.query.filter_by(id=id).first()
         if story:
             if data.get('title'):
                 story.title = data['title']
+                story.body = data['body']
                 db.session.commit()
             return story.to_dict(), 200
         else:

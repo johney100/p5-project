@@ -51,8 +51,7 @@ function AddStory({ onAddStory, storyToUpdate, onUpdateStory }) {
   };
 
   const fetchGeminiAPI = async (prompt) => {
-    // Replace with your actual Gemini API call logic
-    // This is just an example structure
+  
     const response = await fetch("https://your-gemini-api-endpoint", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
