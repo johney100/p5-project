@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 function AddComment({ onAddComment, storyId }) {
+  const [userList, setUserList] = useState([])
+
   const initialValues = {
     comment: "",
     rating: "",
     user_id: "",
     story_id: storyId,
+    username: ""
   };
 
   
-
   const validate = (values) => {
     const errors = {};
     if (!values.comment) {
@@ -24,10 +26,38 @@ function AddComment({ onAddComment, storyId }) {
     return errors;
   };
 
-  const handleFetchUsers = (userList) => { fetch(`http://127.0.0.1:5000/users`, { method: "GET", })}
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await fetch("http://127.0.0.1:5000/users");
+      if (response.ok) {
+        const data = await response.json();
+        setUserList(data);
+      } else {
+        console.error("Error fetching user list:", response.statusText);
+      }
+    };
+    fetchUsers();
+  }, []);
+  
+  console.log(userList)
+    
 
   const handleSubmit = async (values, { resetForm }) => {
     // Send a POST request to create a new comment
+    //const handleFetchUsers = (userList) => { fetch(`http://127.0.0.1:5000/users`, { method: "GET", })}
+    //const userId = userList.find((user) => user.username === values.username)?.user_id;
+
+    const userId = userList.find((user) => user.username === values.username)?.id;
+    console.log(userId)
+    if (!userId) {
+      console.error("User ID not found for username:", values.username);
+      return;
+    }
+
+   
+    // Update values with retrieved user ID
+    values.user_id = userId;
+
     const reviewResponse = await fetch("http://127.0.0.1:5000/comments", {
       method: "POST",
       headers: {

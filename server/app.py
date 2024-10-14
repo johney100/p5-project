@@ -90,12 +90,14 @@ class CommentList(Resource):
         parser.add_argument('rating', required=True)
         parser.add_argument('comment', required=True)
         parser.add_argument('story_id', required=True)
+        parser.add_argument('user_id', required=True)
         data = parser.parse_args()
 
         new_comment = Comment(
             rating=data['rating'],
             comment=data['comment'],
-            story_id=data['story_id']
+            story_id=data['story_id'],
+            user_id=data['user_id']
         )
 
         db.session.add(new_comment)

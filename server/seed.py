@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Story, Author, User, Review, stories_authors
+from models import db, Story, Author, User, Comment, stories_authors
 
 fake = Faker()
 
@@ -18,21 +18,21 @@ scores = [s+1 for s in range(4)]
 
 
 
-def make_reviews():
+def make_comments():
 
-    Review.query.delete()
+    Comment.query.delete()
     
-    reviews = [
-        Review(
+    comments = [
+        Comment(
             comment=fake.sentence(),
-            score=randint(1, 4),
+            rating=randint(1, 4),
             story_id=randint(1, 10),
             user_id=randint(1, 10),
         )
         for _ in range(20)
     ]
     
-    db.session.add_all(reviews)
+    db.session.add_all(comments)
     db.session.commit()    
 
 def make_authors():
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     
     with app.app_context():
         print("Starting seed...")
-        make_reviews()
+        make_comments()
         make_authors()
         make_users()
         make_stories()

@@ -1,4 +1,3 @@
-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy_serializer import SerializerMixin
@@ -15,8 +14,8 @@ stories_authors = db.Table(
     'stories_authors',
     metadata,
     db.Column('story_id', db.Integer, db.ForeignKey('stories.id'), primary_key=True),
-    db.Column('author', db.Integer, db.ForeignKey('authors.id'), primary_key=True),
-    db.Column('role', db.String, unique=False)  # Add a new column for the role attribute
+    db.Column('author_id', db.Integer, db.ForeignKey('authors.id'), primary_key=True),  # Renamed for clarity
+    db.Column('role', db.String, unique=False)  # Role for author in the story
 )
 
 
@@ -56,11 +55,10 @@ class Author(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     id = db.Column(db.Integer, primary_key=True)
-    
-    
+
     # Relationship mapping the actor to related stories
     stories = db.relationship(
-        'Story', secondary=stories_authors, back_populates='authors')
+       'Story', secondary=stories_authors, back_populates='authors')
 
     def __repr__(self):
         return f'<Author {self.name}>'
@@ -69,7 +67,7 @@ class Author(db.Model, SerializerMixin):
 class Comment(db.Model, SerializerMixin):
     __tablename__ = 'comments'
 
-    # serialize_rules = ('-shows',)  # Remove if not using serialization
+    serialize_rules = ('-stories',)  # Remove if not using serialization
 
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer)
@@ -92,7 +90,7 @@ class Comment(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    #serialize_rules = ('-reviews.user',)
+    serialize_rules = ('-comments.user',)
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String)
@@ -108,4 +106,4 @@ class User(db.Model, SerializerMixin):
 ### USE breakpoint - similar to ipdb - external lib
 ## print method + repr
 ## add styling - tailwind is popular
-## review association 
+## review association
