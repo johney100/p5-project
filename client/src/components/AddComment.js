@@ -101,7 +101,7 @@ function AddComment({ onAddComment, storyId }) {
           />
           <ErrorMessage name="rating" component="div" className="error" />
           
-          <Field
+          <Field 
             type="text"
             name="username"
             autoComplete="off"
@@ -111,8 +111,8 @@ function AddComment({ onAddComment, storyId }) {
           />
           <ErrorMessage name="username" component="div" className="error" />
 
-          <button type="submit" disabled={!!errors.length}>
-            Send
+          <button class="new-comment-button" type="submit" disabled={!!errors.length}>
+            Post
           </button>
         </Form>
       )}

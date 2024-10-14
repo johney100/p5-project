@@ -74,14 +74,7 @@ function AddStory({ onAddStory, storyToUpdate, onUpdateStory }) {
           />
           <ErrorMessage name="title" component="div" className="error" />
 
-          <Field
-            type="checkbox"
-            name="useGenAI"
-            onChange={handleChange}
-          />
-          <label htmlFor="useGenAI">Use GenAI to write the story</label>
-
-          <Field
+          <Field class="expanded-input"
             type="text"
             name="body"
             autoComplete="off"
@@ -92,7 +85,7 @@ function AddStory({ onAddStory, storyToUpdate, onUpdateStory }) {
           />
           <ErrorMessage name="body" component="div" className="error" />
 
-          <button type="submit">{storyToUpdate ? "Update" : "Send"}</button>
+          <button className="new-story-button" type="submit">{storyToUpdate ? "Update" : "Submit"}</button>
         </Form>
       )}
     </Formik>

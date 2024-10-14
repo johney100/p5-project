@@ -60,7 +60,7 @@ function AddUser({ onAddUser }) {
           />
           <ErrorMessage name="username" component="div" className="error" />
 
-          <button type="submit" disabled={!!errors.length}>Send</button>
+          <button class="new-user-button" type="submit" disabled={!!errors.length}>Add</button>
         </Form>
       )}
     </Formik>

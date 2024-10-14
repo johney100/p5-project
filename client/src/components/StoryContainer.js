@@ -72,11 +72,10 @@ function StoryContainer() {
   };
 
   return (
-    <div className="container">
-      <h2>This is the Story Card</h2>
-      <h1>Add a new story</h1>
+    <div class ="story-container">
+        <h1>Add a new story</h1>
       <AddStory onAddStory={handleAddStory} storyToUpdate={selectedStory} onUpdateStory={handleUpdateStory} />
-      <h2>List of Stories</h2>
+      <h2>Latest Stories</h2>
       <ul>
         {stories.map((story) => (
           <li key={story.id}>

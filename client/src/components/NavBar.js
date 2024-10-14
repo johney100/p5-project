@@ -9,10 +9,10 @@ function NavBar(){
     return(
         <div>
             <nav className="navbar">
-            <Link to="/">Stories</Link>
-            <Link to="/users">Users</Link>
-            <Link to="/authors">Authors</Link>
-            <Link to="/ai">AI</Link>
+            <Link class="navbar-links" to="/">Stories</Link>
+            <Link class ="navbar-link"s to="/users">Users</Link>
+            <Link class="navbar-links" to="/authors">Authors</Link>
+            <Link className="navbar-links" to="/ai">AI</Link>
             </nav>
         </div>
     );

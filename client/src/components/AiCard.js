@@ -68,10 +68,10 @@ const AiCard = () => {
   };
 
   return (
-    <div>
-      <h1>Generative AI Story Writer</h1>
+    <div class="ai-card">
+      <h1 class="ai-card-title">Generative AI Story Writer</h1>
 
-      <div style={{ display: 'flex' }}>
+      <div class="ai-card-content" style={{ display: 'flex' }}>
         <input
           placeholder='Enter story topic for Gemini to write about'
           onChange={handleChangeSearch}

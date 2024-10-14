@@ -1,44 +1,358 @@
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-/* Global styles */
+/* Global Styles */
 body {
-  @apply bg-gray-100 text-gray-800;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
 }
 
-/* Navbar styles */
+/* NavBar Styles */
 .navbar {
-  @apply bg-blue-500 text-white px-4 py-3;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-nav {
-  @apply flex items-center gap-4;
+.navbar-logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
 }
 
-.navbar-nav a {
-  @apply text-white hover:underline;
+.navbar-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* Container styles */
-.container {
-  @apply max-w-screen-xl mx-auto px-4 py-6;
+.navbar-links li {
+  margin-right: 10px;
 }
 
-/* ShowContainer styles */
-.show-card {
-  @apply border border-gray-200 rounded-lg p-4 m-4;
+.navbar-links a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
 }
 
-/* ActorContainer styles */
-.actor-card {
-  @apply border border-gray-200 rounded-lg p-4 m-4;
+.navbar-links a:hover {
+  color: #333;
 }
 
-/* UserContainer styles */
-.user-card {
-  @apply border border-gray-200 rounded-lg p-4 m-4;
+/* StoryContainer Styles */
+.story-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
+
+.story-container h1,
+.story-container h2 {
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.story-container h1 {
+  font-size: 24px;
+}
+
+.story-container h2 {
+  font-size: 20px;
+}
+
+.story-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.story-container ul li {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.story-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.story-author {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.story-content {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+new-story label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.new-story input[type="text"],
+.new-story textarea {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.new-story input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.expanded-input {
+  width: 80vw; /* Sets the input to 80% of the viewport width */
+  height: 20vw;
+  /* OR */
+
+}
+
+.new-story button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight:   
+ bold;
+  margin-top: 10px;
+}
+
+/* AuthorContainer Styles */
+.author-container {
+  max-width: 700px;
+  margin: 40px auto;
+}
+
+.new-author {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.author-list {
+  list-style: none;
+  padding: 0;
+}
+
+.author-item {
+  margin-bottom: 20px;
+}
+
+.author-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.author-bio {
+  font-size: 16px;
+  color: #888;
+}
+
+/* UserContainer Styles */
+.user-container {
+  max-width: 700px;
+  margin: 40px auto;
+}
+
+.new-user button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight:   
+ bold;
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+
+.user-item {
+  margin-bottom: 20px;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user-email {
+  font-size: 16px;
+  color: #888;
+}
+
+.new-comment {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.new-comment h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.new-comment .form-group {
+  margin-bottom: 15px;
+}
+
+.new-comment label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.new-comment input[type="text"],
+.new-comment input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.new-comment .error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.new-comment button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight:   
+ bold;
+}
+
+
+
+.new-comment button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+.new-author button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight:   
+ bold;
+}
+
+.new-author h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.new-author .form-group {
+  margin-bottom: 15px;
+}
+
+.new-author label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.new-author input[type="text"],
+.new-author input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.new-author .error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.new-author button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight:   
+ bold;
+}
+
+
+
+.new-author button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* AiCard Styles */
+.ai-card {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.ai-card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.ai-card-content {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.ai-card button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight:   
+ bold;
+}
