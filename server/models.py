@@ -59,6 +59,8 @@ class Author(db.Model, SerializerMixin):
     # Relationship mapping the actor to related stories
     stories = db.relationship(
        'Story', secondary=stories_authors, back_populates='authors')
+    
+    story_id = db.Column(db.Integer, db.ForeignKey('stories.id'))
 
     def __repr__(self):
         return f'<Author {self.name}>'

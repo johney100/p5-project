@@ -143,24 +143,30 @@ class AuthorList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', required=True)
         parser.add_argument('age')
-       # parser.add_argument('story_id', required=True)
+        parser.add_argument('story_id', required=True)
         parser.add_argument('role')
         data = parser.parse_args()
 
+        # Create a new Author object
         new_author = Author(
             name=data['name'],
             age=data.get('age'),
-           # story_id=data['story_id']
+            story_id=data['story_id']
         )
 
+        # Save the author to the database
         db.session.add(new_author)
         db.session.commit()
 
-        # Associate actor with show using relationship
-        new_author.stories.append(Author.query.get(data['story_id']))  # Assuming Show model exists
+        # No need for a separate association insert
+        # The association is automatically created because `story_id` is set in the Author object
+
+        return new_author.to_dict(), 201
+
+        #new_author.stories.append(Author.query.get(data['story_id']))  
 
         # No need for separate association insert
-        db.session.commit()
+       # db.session.commit()
 
         return new_author.to_dict(), 201
 
@@ -185,6 +191,32 @@ class StoryAuthorRelationship(Resource):
             return {'message': 'Role updated successfully'}, 200
         else:
             return {'message': 'Story-author relationship not found'}, 404
+
+    def post(self, story_id, author_id):
+        parser = reqparse.RequestParser()
+        parser.add_argument('role')
+        data = parser.parse_args()
+
+        # Check if the story and author exist
+        story = Story.query.get(story_id)
+        author = Author.query.get(author_id)
+
+        if story and author:
+            # Create the story-author association using the insert method
+            insert_stmt = stories_authors.insert().values(story_id=story_id, author_id=author_id, role=data.get('role'))
+            db.session.execute(insert_stmt)
+
+            try:
+                # Commit the changes to the database
+                db.session.commit()
+                return {'message': 'Story-author relationship created successfully'}, 201
+            except Exception as e:
+                # Handle database errors gracefully
+                db.session.rollback()  # Rollback changes if an exception occurs
+                return {'message': f"Failed to create association: {str(e)}"}, 400
+
+        else:
+            return {'message': 'Story or author not found'}, 404
 
 
 

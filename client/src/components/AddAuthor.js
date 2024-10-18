@@ -40,9 +40,10 @@ function AddAuthor({ onAddAuthor, storyId }) {
     resetForm();
 
     const newAuthorData = await authorResponse.json();
+    
 
     // Send a POST request to create a new story-author association
-    const associationResponse = await fetch("http://127.0.0.1:5000/stories_authors", {
+    const associationResponse = await fetch(`http://127.0.0.1:5000/stories_authors/${storyId}/${newAuthorData.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

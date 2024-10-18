@@ -1,8 +1,8 @@
-"""update stories_authors schema
+"""initial mig
 
-Revision ID: 836229339a63
+Revision ID: 377d9c240067
 Revises: 
-Create Date: 2024-10-14 08:43:32.063093
+Create Date: 2024-10-18 15:45:12.952153
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '836229339a63'
+revision = '377d9c240067'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,6 +21,7 @@ def upgrade():
     op.create_table('authors',
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('age', sa.Integer(), nullable=True),
+    sa.Column('storyId', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
