@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import '../index.css';
 import StoryContainer from './StoryContainer';
 import AuthorContainer from './AuthorContainer';
@@ -6,6 +6,8 @@ import UserContainer from './UserContainer';
 import NavBar from './NavBar';
 import AiCard from "./AiCard";
 import {BrowserRouter, Switch, Routes, Route, Link} from "react-router-dom";
+import { DataProvider, DataContext } from './contexts/dataContext';
+
 
 
 
@@ -14,11 +16,12 @@ import {BrowserRouter, Switch, Routes, Route, Link} from "react-router-dom";
 function App() {
 
   
-  const [authors, setAuthors] = useState([]);
-  const [users, setUsers] = useState([]);
+  //const [authors, setAuthors] = useState([])
+  //const [users, setUsers] = useState([]);
  
-
-
+  const { authors, users } = useContext(DataContext);
+  console.log(users);
+/*
   useEffect(() => {
     const fetchAuthorData = async () => {
       try {
@@ -47,9 +50,10 @@ function App() {
     fetchUserData();
   }, []);
 
- 
+ */
 
   return (
+    <DataProvider>
     <div className="App"> 
     <h1>Story App</h1>
     <BrowserRouter>
@@ -62,6 +66,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     </div>
+    </DataProvider>
   );
 }
 

@@ -1,9 +1,10 @@
-import React, {useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UserCard from "./UserCard"; 
 import AddUser from "./AddUser";
+import { DataContext } from './contexts/dataContext';
 
-function UserContainer({users}) {
-  
+function UserContainer(/*{users}*/) {
+  const { users } = useContext(DataContext);
   return (
     <div>
       <h2>Active User List</h2>

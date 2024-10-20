@@ -1,7 +1,9 @@
-import React, {useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthorCard from "./AuthorCard"; 
+import { DataContext } from './contexts/dataContext';
 
-function AuthorContainer({authors}) {
+function AuthorContainer(){
+  const { authors } = useContext(DataContext);
   return (
     <div>
       <h2>This is the Author Card</h2>
